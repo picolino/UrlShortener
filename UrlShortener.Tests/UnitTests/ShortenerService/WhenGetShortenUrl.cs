@@ -19,6 +19,7 @@ namespace UrlShortener.Tests.UnitTests.ShortenerService
         }
         
         [Test]
+        [Repeat(50)]
         public async Task EqualSourceUrlsMustHaveDifferentShortUrls()
         {
             var sourceUrl = "https://google.com/";

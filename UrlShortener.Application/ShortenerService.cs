@@ -19,7 +19,7 @@ namespace UrlShortener.Application
         {
             var objectId = ObjectId.GenerateNewId();
 
-            var shortenUrl = Base64IntToStringEncoder.Encode(objectId.Timestamp);
+            var shortenUrl = Base64IntToStringEncoder.Encode(objectId.GetHashCode());
             
             await databaseContext.SaveShortLinkAsync(objectId, userId, sourceUrl, shortenUrl);
             

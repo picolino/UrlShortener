@@ -11,6 +11,7 @@ namespace UrlShortener.Application.Helpers
         internal static string Encode(int num)
         {
             if (num == 0) return Alphabet[0].ToString();
+            if (num < 0) num = -num;
 
             var stringBuilder = new StringBuilder();
 
