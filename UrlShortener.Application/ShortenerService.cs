@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using MongoDB.Bson;
+using UrlShortener.Application.Helpers;
 using UrlShortener.DataContext;
 
 namespace UrlShortener.Application
@@ -13,9 +15,16 @@ namespace UrlShortener.Application
             this.databaseContext = databaseContext;
         }
         
-        public Task<string> GetShortenUrlAsync(string sourceUrl)
+        public async Task<string> GetShortenUrlAsync(string sourceUrl)
         {
-            throw new NotImplementedException();
+            var objectId = new ObjectId();
+            var hash = objectId.GetHashCode();
+
+            var shortenUrl = Base64IntToStringEncoder.Encode(hash);
+
+            await databaseContext.SaveShortLinkAsync(objectId, Guid.Empty, sourceUrl, shortenUrl);
+            
+            return shortenUrl;
         }
 
         public async Task<string> GetSourceUrlByShortenUrlAsync(string shortUrl)

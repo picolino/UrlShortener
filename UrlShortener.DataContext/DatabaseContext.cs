@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using UrlShortener.DataContext.Entities;
 
@@ -18,10 +19,11 @@ namespace UrlShortener.DataContext
             shortLinksCollection = database.GetCollection<ShortLink>("short-links");
         }
 
-        public async Task SaveShortLinkAsync(Guid userId, string sourceUrl, string shortUrl)
+        public async Task SaveShortLinkAsync(ObjectId id, Guid userId, string sourceUrl, string shortUrl)
         {
             await shortLinksCollection.InsertOneAsync(new ShortLink
                                                       {
+                                                          Id = id,
                                                           SourceUrl = sourceUrl,
                                                           ShortUrl = shortUrl,
                                                           UserId = userId
@@ -33,7 +35,7 @@ namespace UrlShortener.DataContext
             return await shortLinksCollection.Find(o => o.ShortUrl == shortUrl).FirstAsync();
         }
 
-        public async Task IncrementShortLinkReceiveCounter(Guid shortLinkId)
+        public async Task IncrementShortLinkReceiveCounter(ObjectId shortLinkId)
         {
             await shortLinksCollection.UpdateOneAsync(o => o.Id == shortLinkId, Builders<ShortLink>.Update.Inc(o => o.ReceiveCounter, 1));
         }
