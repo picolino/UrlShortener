@@ -61,7 +61,7 @@ asdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqas
         {
             var sourceUrl = "https://google.com/";
             
-            var url = await ShortenerService.GetShortenUrlAsync(sourceUrl, Guid.Empty);
+            await ShortenerService.GetShortenUrlAsync(sourceUrl, Guid.Empty);
             
             Assert.That(DatabaseContextStub.ShortLinks.Single().SourceUrl, Is.EqualTo(sourceUrl));
         }
@@ -74,6 +74,17 @@ asdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqas
             var url = await ShortenerService.GetShortenUrlAsync(sourceUrl, Guid.Empty);
             
             Assert.That(DatabaseContextStub.ShortLinks.Single().ShortUrl, Is.EqualTo(url));
+        }
+
+        [Test]
+        public async Task DatabaseMustHaveRecordWithEqualUserId()
+        {
+            var sourceUrl = "https://google.com/";
+            var userId = Guid.NewGuid();
+            
+            await ShortenerService.GetShortenUrlAsync(sourceUrl, userId);
+            
+            Assert.That(DatabaseContextStub.ShortLinks.Single().UserId, Is.EqualTo(userId));
         }
     }
 }
