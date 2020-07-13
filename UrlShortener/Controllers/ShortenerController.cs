@@ -23,9 +23,10 @@ namespace UrlShortener.Controllers
 
         [HttpGet]
         [Route("{shortenUrl}")]
-        public async Task<string> GetSourceUrlByShortenUrlAsync(string shortenUrl)
+        public async Task<IActionResult> GetSourceUrlByShortenUrlAsync(string shortenUrl)
         {
-            return await shortenerService.GetSourceUrlByShortenUrlAsync(shortenUrl);
+            var url = await shortenerService.GetSourceUrlByShortenUrlAsync(shortenUrl);
+            return Redirect(url);
         }
     }
 }
