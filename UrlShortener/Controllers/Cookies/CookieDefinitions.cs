@@ -1,4 +1,4 @@
-﻿namespace UrlShortener.Controllers
+﻿namespace UrlShortener.Controllers.Cookies
 {
     public static class Definitions
     {
