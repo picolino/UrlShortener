@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UrlShortener.Application;
 
@@ -18,7 +20,21 @@ namespace UrlShortener.Controllers
         [Route("shrink")]
         public async Task<string> GetShortenUrlAsync(string url)
         {
-            return await shortenerService.GetShortenUrlAsync(url);
+            var hasUserId = HttpContext.Request.Cookies.ContainsKey(Definitions.UserIdCookieKey);
+
+            Guid userId;
+            
+            if (hasUserId)
+            {
+                userId = Guid.Parse(HttpContext.Request.Cookies[Definitions.UserIdCookieKey]);
+            }
+            else
+            {
+                userId = Guid.NewGuid();
+                HttpContext.Response.Cookies.Append(Definitions.UserIdCookieKey, userId.ToString());
+            }
+            
+            return await shortenerService.GetShortenUrlAsync(url, userId);
         }
 
         [HttpGet]

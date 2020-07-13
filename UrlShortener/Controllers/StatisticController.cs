@@ -28,10 +28,12 @@ namespace UrlShortener.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("user")]
-        public async IAsyncEnumerable<ShortLinkData> GetShortUrlsDataByUserAsync(Guid userId)
+        public async IAsyncEnumerable<ShortLinkData> GetShortUrlsDataByUserAsync()
         {
+            var userId = Guid.Parse(HttpContext.Request.Cookies[Definitions.UserIdCookieKey]);
+            
             var documents = statisticService.GetShortUrlsDataByUserAsync(userId);
             await foreach (var document in documents)
             {

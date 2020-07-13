@@ -15,14 +15,14 @@ namespace UrlShortener.Application
             this.databaseContext = databaseContext;
         }
         
-        public async Task<string> GetShortenUrlAsync(string sourceUrl)
+        public async Task<string> GetShortenUrlAsync(string sourceUrl, Guid userId)
         {
             var objectId = ObjectId.GenerateNewId();
             var hash = objectId.GetHashCode();
 
             var shortenUrl = Base64IntToStringEncoder.Encode(hash);
-
-            await databaseContext.SaveShortLinkAsync(objectId, Guid.Empty, sourceUrl, shortenUrl);
+            
+            await databaseContext.SaveShortLinkAsync(objectId, userId, sourceUrl, shortenUrl);
             
             return shortenUrl;
         }
