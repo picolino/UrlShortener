@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
@@ -26,6 +27,52 @@ namespace UrlShortener.Tests.UnitTests.ShortenerService
             var url2 = await ShortenerService.GetShortenUrlAsync(sourceUrl, Guid.Empty);
             
             Assert.That(url1, Is.Not.EqualTo(url2));
+        }
+
+        [Test]
+        public async Task LargeSourceUrlProducesLessOrEqualSixLengthShortUrl()
+        {
+            var largeUrl = @"https://google.com/asdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweq
+asdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweq
+asdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweq
+asdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweq
+asdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweq
+asdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweq
+asdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweqasdweq";
+            
+            var url = await ShortenerService.GetShortenUrlAsync(largeUrl, Guid.Empty);
+            
+            Assert.That(url.Length, Is.LessThanOrEqualTo(6));
+        }
+
+        [Test]
+        public async Task DatabaseMustHaveGeneratedShortLinks()
+        {
+            var sourceUrl = "https://google.com/";
+            
+            await ShortenerService.GetShortenUrlAsync(sourceUrl, Guid.Empty);
+            
+            Assert.That(DatabaseContextStub.ShortLinks, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task DatabaseMustHaveRecordWithEqualSourceUrl()
+        {
+            var sourceUrl = "https://google.com/";
+            
+            var url = await ShortenerService.GetShortenUrlAsync(sourceUrl, Guid.Empty);
+            
+            Assert.That(DatabaseContextStub.ShortLinks.Single().SourceUrl, Is.EqualTo(sourceUrl));
+        }
+
+        [Test]
+        public async Task DatabaseMustHaveRecordWithEqualShortUrl()
+        {
+            var sourceUrl = "https://google.com/";
+            
+            var url = await ShortenerService.GetShortenUrlAsync(sourceUrl, Guid.Empty);
+            
+            Assert.That(DatabaseContextStub.ShortLinks.Single().ShortUrl, Is.EqualTo(url));
         }
     }
 }
