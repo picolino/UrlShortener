@@ -7,7 +7,7 @@ using UrlShortener.Application.Domain;
 namespace UrlShortener.Controllers
 {
     [ApiController]
-    [Route("/statistics/")]
+    [Route("statistics")]
     public class StatisticController : ControllerBase
     {
         private readonly StatisticService statisticService;
@@ -18,7 +18,7 @@ namespace UrlShortener.Controllers
         }
         
         [HttpGet]
-        [Route("/all")]
+        [Route("all")]
         public async IAsyncEnumerable<ShortLinkData> GetShortUrlsDataAllAsync()
         {
             var documents = statisticService.GetShortUrlsDataAllAsync();
@@ -29,7 +29,7 @@ namespace UrlShortener.Controllers
         }
 
         [HttpPost]
-        [Route("/user")]
+        [Route("user")]
         public async IAsyncEnumerable<ShortLinkData> GetShortUrlsDataByUserAsync(Guid userId)
         {
             var documents = statisticService.GetShortUrlsDataByUserAsync(userId);

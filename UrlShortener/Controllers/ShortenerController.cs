@@ -15,14 +15,14 @@ namespace UrlShortener.Controllers
         }
         
         [HttpGet]
-        [Route("/short")]
-        public async Task<string> GetShortenUrlAsync(string sourceUrl)
+        [Route("shrink")]
+        public async Task<string> GetShortenUrlAsync(string url)
         {
-            return await shortenerService.GetShortenUrlAsync(sourceUrl);
+            return await shortenerService.GetShortenUrlAsync(url);
         }
 
         [HttpGet]
-        [Route("")]
+        [Route("{shortenUrl}")]
         public async Task<string> GetSourceUrlByShortenUrlAsync(string shortenUrl)
         {
             return await shortenerService.GetSourceUrlByShortenUrlAsync(shortenUrl);
