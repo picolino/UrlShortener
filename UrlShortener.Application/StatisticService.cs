@@ -4,12 +4,12 @@ namespace UrlShortener.Application
 {
     public class StatisticService
     {
-        public void GetShortUrlsDataAll()
+        public string GetShortUrlsDataAll()
         {
             throw new NotImplementedException();
         }
 
-        public void GetShortUrlsDataByUser(Guid userId)
+        public string GetShortUrlsDataByUser(Guid userId)
         {
             throw new NotImplementedException();
         }
