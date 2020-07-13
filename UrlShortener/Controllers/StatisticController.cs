@@ -31,15 +31,15 @@ namespace UrlShortener.Controllers
 
         [HttpGet]
         [Route("user")]
-        public async IAsyncEnumerable<ShortLinkData> GetShortUrlsDataByUserAsync()
+        public IActionResult GetShortUrlsDataByUserAsync()
         {
-            var userId = Guid.Parse(HttpContext.Request.Cookies[Definitions.UserIdCookieKey]);
-            
-            var documents = statisticService.GetShortUrlsDataByUserAsync(userId);
-            await foreach (var document in documents)
+            if (!HttpContext.Request.Cookies.ContainsKey(Definitions.UserIdCookieKey))
             {
-                yield return document;
+                return BadRequest("User id missing");
             }
+            
+            var userId = Guid.Parse(HttpContext.Request.Cookies[Definitions.UserIdCookieKey]);
+            return Ok(statisticService.GetShortUrlsDataByUserAsync(userId));
         }
     }
 }
