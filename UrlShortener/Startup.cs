@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using UrlShortener.Application;
+using UrlShortener.DataContext;
 
 namespace UrlShortener
 {
@@ -26,6 +28,10 @@ namespace UrlShortener
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddSingleton<IDatabaseContext>(new DatabaseContext("mongodb://localhost:27017"));
+            services.AddSingleton<ShortenerService>();
+            services.AddSingleton<StatisticService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

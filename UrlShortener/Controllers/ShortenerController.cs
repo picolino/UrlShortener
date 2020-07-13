@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using UrlShortener.Application;
 
 namespace UrlShortener.Controllers
@@ -6,20 +7,25 @@ namespace UrlShortener.Controllers
     [ApiController]
     public class ShortenerController : ControllerBase
     {
-        private ShortenerService ShortenerService => new ShortenerService();
+        private readonly ShortenerService shortenerService;
+
+        public ShortenerController(ShortenerService shortenerService)
+        {
+            this.shortenerService = shortenerService;
+        }
         
         [HttpGet]
         [Route("/short")]
-        public string GetShortenUrl(string sourceUrl)
+        public async Task<string> GetShortenUrlAsync(string sourceUrl)
         {
-            return ShortenerService.GetShortenUrl(sourceUrl);
+            return await shortenerService.GetShortenUrlAsync(sourceUrl);
         }
 
         [HttpGet]
-        [Route("/source")]
-        public string GetSourceUrlByShortenUrl(string shortenUrl)
+        [Route("")]
+        public async Task<string> GetSourceUrlByShortenUrlAsync(string shortenUrl)
         {
-            return ShortenerService.GetSourceUrlByShortenUrl(shortenUrl);
+            return await shortenerService.GetSourceUrlByShortenUrlAsync(shortenUrl);
         }
     }
 }

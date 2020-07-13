@@ -1,17 +1,38 @@
 ﻿using System;
+using System.Collections.Generic;
+using UrlShortener.Application.Converters;
+using UrlShortener.Application.Domain;
+using UrlShortener.DataContext;
 
 namespace UrlShortener.Application
 {
     public class StatisticService
     {
-        public string GetShortUrlsDataAll()
+        private readonly IDatabaseContext databaseContext;
+
+        public StatisticService(IDatabaseContext databaseContext)
         {
-            throw new NotImplementedException();
+            this.databaseContext = databaseContext;
+        }
+        
+        public async IAsyncEnumerable<ShortLinkData> GetShortUrlsDataAllAsync()
+        {
+            var documents = await databaseContext.GetAllShortLinksAsync();
+
+            foreach (var shortLink in documents)
+            {
+                yield return ShortLinkConverter.ToDomain(shortLink);
+            }
         }
 
-        public string GetShortUrlsDataByUser(Guid userId)
+        public async IAsyncEnumerable<ShortLinkData> GetShortUrlsDataByUserAsync(Guid userId)
         {
-            throw new NotImplementedException();
+            var documents = await databaseContext.GetAllShortLinksByUserIdAsync(userId);
+
+            foreach (var shortLink in documents)
+            {
+                yield return ShortLinkConverter.ToDomain(shortLink);
+            }
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using UrlShortener.Application;
+using UrlShortener.Application.Domain;
 
 namespace UrlShortener.Controllers
 {
@@ -8,20 +10,33 @@ namespace UrlShortener.Controllers
     [Route("/statistics/")]
     public class StatisticController : ControllerBase
     {
-        private StatisticService StatisticService => new StatisticService();
+        private readonly StatisticService statisticService;
+
+        public StatisticController(StatisticService statisticService)
+        {
+            this.statisticService = statisticService;
+        }
         
         [HttpGet]
         [Route("/all")]
-        public string GetShortUrlsDataAll()
+        public async IAsyncEnumerable<ShortLinkData> GetShortUrlsDataAllAsync()
         {
-            return StatisticService.GetShortUrlsDataAll();
+            var documents = statisticService.GetShortUrlsDataAllAsync();
+            await foreach (var document in documents)
+            {
+                yield return document;
+            }
         }
 
         [HttpPost]
         [Route("/user")]
-        public string GetShortUrlsDataByUser(Guid userId)
+        public async IAsyncEnumerable<ShortLinkData> GetShortUrlsDataByUserAsync(Guid userId)
         {
-            return StatisticService.GetShortUrlsDataByUser(userId);
+            var documents = statisticService.GetShortUrlsDataByUserAsync(userId);
+            await foreach (var document in documents)
+            {
+                yield return document;
+            }
         }
     }
 }
