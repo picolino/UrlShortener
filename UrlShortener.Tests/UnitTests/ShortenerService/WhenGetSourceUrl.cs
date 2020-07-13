@@ -8,14 +8,6 @@ namespace UrlShortener.Tests.UnitTests.ShortenerService
     public class WhenGetSourceUrl : ShortenerServiceTestBase
     {
         [Test]
-        public void ExceptionMustThrowsIfNoSuchShortUrlFound()
-        {
-            const string shortUrl = "fh84ea";
-
-            Assert.ThrowsAsync<InvalidOperationException>(() => ShortenerService.GetSourceUrlByShortenUrlAsync(shortUrl));
-        }
-        
-        [Test]
         public async Task SourceUrlMustBeReturned()
         {
             const string expectedSourceUrl = "https://google.com/";

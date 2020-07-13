@@ -29,6 +29,11 @@ namespace UrlShortener.Application
         public async Task<string> GetSourceUrlByShortenUrlAsync(string shortUrl)
         {
             var shortLink = await databaseContext.GetShortLinkByShortUrlAsync(shortUrl);
+
+            if (shortLink is null)
+            {
+                return null;
+            }
             
             await databaseContext.IncrementShortLinkReceiveCounter(shortLink.Id);
 

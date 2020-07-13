@@ -42,6 +42,12 @@ namespace UrlShortener.Controllers
         public async Task<IActionResult> GetSourceUrlByShortenUrlAsync(string shortenUrl)
         {
             var url = await shortenerService.GetSourceUrlByShortenUrlAsync(shortenUrl);
+
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                return NotFound();
+            }
+            
             return Redirect(url);
         }
     }

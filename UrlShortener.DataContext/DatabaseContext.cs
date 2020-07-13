@@ -32,7 +32,7 @@ namespace UrlShortener.DataContext
 
         public async Task<ShortLink> GetShortLinkByShortUrlAsync(string shortUrl)
         {
-            return await shortLinksCollection.Find(o => o.ShortUrl == shortUrl).FirstAsync();
+            return await shortLinksCollection.Find(o => o.ShortUrl == shortUrl).FirstOrDefaultAsync();
         }
 
         public async Task IncrementShortLinkReceiveCounter(ObjectId shortLinkId)
