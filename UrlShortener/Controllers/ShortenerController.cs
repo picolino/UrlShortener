@@ -38,7 +38,7 @@ namespace UrlShortener.Controllers
         }
 
         [HttpGet]
-        [Route("{shortenUrl}")]
+        [Route("{*shortenUrl:regex([[0-9a-zA-Z]]{{1,6}})}")]
         public async Task<IActionResult> GetSourceUrlByShortenUrlAsync(string shortenUrl)
         {
             var url = await shortenerService.GetSourceUrlByShortenUrlAsync(shortenUrl);
