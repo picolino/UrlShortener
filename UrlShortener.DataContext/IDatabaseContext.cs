@@ -11,6 +11,6 @@ namespace UrlShortener.DataContext
         Task<ShortLink> GetShortLinkByShortUrlAsync(string shortUrl);
         Task<IEnumerable<ShortLink>> GetAllShortLinksAsync();
         Task<IEnumerable<ShortLink>> GetAllShortLinksByUserIdAsync(Guid userId);
-        Task IncrementShortLinkReceiveCounter(int shortLinkId);
+        Task IncrementShortLinkReceiveCounter(Guid shortLinkId);
     }
 }

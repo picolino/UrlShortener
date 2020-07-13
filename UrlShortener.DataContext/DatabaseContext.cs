@@ -33,7 +33,7 @@ namespace UrlShortener.DataContext
             return await shortLinksCollection.Find(o => o.ShortUrl == shortUrl).FirstAsync();
         }
 
-        public async Task IncrementShortLinkReceiveCounter(int shortLinkId)
+        public async Task IncrementShortLinkReceiveCounter(Guid shortLinkId)
         {
             await shortLinksCollection.UpdateOneAsync(o => o.Id == shortLinkId, Builders<ShortLink>.Update.Inc(o => o.ReceiveCounter, 1));
         }
