@@ -17,7 +17,7 @@ namespace UrlShortener.Application
         
         public async Task<string> GetShortenUrlAsync(string sourceUrl)
         {
-            var objectId = new ObjectId();
+            var objectId = ObjectId.GenerateNewId();
             var hash = objectId.GetHashCode();
 
             var shortenUrl = Base64IntToStringEncoder.Encode(hash);
