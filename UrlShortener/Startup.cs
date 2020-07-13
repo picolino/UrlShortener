@@ -29,7 +29,9 @@ namespace UrlShortener
         {
             services.AddControllers();
 
-            services.AddSingleton<IDatabaseContext>(new DatabaseContext("mongodb://localhost:27017"));
+            var connectionString = Configuration.GetValue<string>("UrlShortenerDatabaseConnectionString");
+
+            services.AddSingleton<IDatabaseContext>(new DatabaseContext(connectionString));
             services.AddSingleton<ShortenerService>();
             services.AddSingleton<StatisticService>();
         }
